@@ -1,0 +1,12 @@
+What is this? it is a bunch of text templates that can be used in log files to convey meaning.
+For example tag a log to say that it is a solid idea, show that a log is important, show that a log
+has to do with javascript or cross cutting concerns. 
+
+Btw this is human logs. Logs of every somewhat well formed thought you have in a day. After you log
+a bunch you should return to the logs and combine them into a file that condenses and improves the thinking.
+
+Log boundry
+---------------------------------------------------------------------------------------------------
+
+Significance level: high
+!!!IMPORTANT!!!

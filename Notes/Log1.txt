@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------------------------------
+You can proxy addeventlistener.
+---------------------------------------------------------------------------------------------------
+You can proxy element creation.
+---------------------------------------------------------------------------------------------------
+Besides JS we need
+    - We need the static html.
+    - We need the full dom at some state.
+    - We need the full css.
+    - We need images/ vid/ fonts etc. 
+%%%Needs fleshing out%%%( We need the full dom at some state???)
+---------------------------------------------------------------------------------------------------
+You can stop the page during browser startup by putting a breakpoint in the first run piece of js
+and yes you can proxy important builtins!!!!!!
+!!!IMPORTANT!!!
+---------------------------------------------------------------------------------------------------
+You can find the code location in js. By using. Error('').stack
+---------------------------------------------------------------------------------------------------
+This ripper attempst to deal with web requests in a way that preserves some functionality of the site.
+And it will do this in an interactive way that uses user knowledge.
+---------------------------------------------------------------------------------------------------
+Ripping should store requests in a map. The keys would be the request, and the values would be the 
+response data.

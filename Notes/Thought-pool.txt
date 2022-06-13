@@ -1,0 +1,48 @@
+Breif descriptions of what you are currently thinking about.
+When one of these ideas is well formed and somewhat complete promote to the latest log file.
+
++ what other proxies do i need?
+
++ what is the effect of the page start up process?
+
++ what exactly do we want to know?
+
++ how can we generate js from what we can find out?
+
++ How do we deal with dom elements made at runtime? Possibly over the internet
+    Dom elements over the internet are a reaction to a fetch or xmlhttprequest. Those can be hooked and the responses 
+    hooked. But can we hook async await type stuff? Yes i dont see why not. 
+
++ Can we stop the browser during page startup in order to inject js?
+    - It seems that if you put a breakpoint at the first executed piece of JS (not first in the html because of 
+      async reasons). At this point the html source is not available in the sources tab. And document.documentElement
+      reflects the state of parsing. Yes we can stop the browser during page startup in order to inject js!!!!!
+
+
++ How are we going to integrate the different ripping?
+
++ Use map based ripping instead of order. 
+
++ Web requests issues. 
+    - The easiest type of web request to record would be one that happens the same way every time. 
+    - Do dynamic requests send cookies. AKA can the http of a request be totaly determined by whats known to js?
+
++ How to proxy fetch?
+    - Issue 1: copying Request/Response without ruining them.
+    - Issue 2: Proxying promises. Just need the first then/catch.
+        let ofetch = fetch;
+        fetch = function(resource, init){
+
+            console.log('Fetch args->',...arguments);
+            // Below it the core
+            return ofetch(...arguments).then(a=>{console.log('suc->'+a); return a;},a=>{console.log('fail->'+a);throw a;});
+        } 
+
++ How to copy request?
+    - request.clone()
++ How to copy string?
+    - =
++ How to copy stringifyable? 
+    - toString (i belive)
+
++ Is there hidden state sent on fetch/xmlhttprequest that we can't programatically see?
