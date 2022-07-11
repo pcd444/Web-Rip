@@ -128,3 +128,5 @@ invisible it will prevent us from better storing req/resp pairs. Leading to more
 normal. The good part is that most of what http only cookies is used for is persistent login/ 
 session management. Both of these have pretty simple behavior and aren't terrible to fix by hand. 
 ---------------------------------------------------------------------------------------------------
+I think just using Date.now for ripping the start time will work, but if it doesn't you can try to
+use perfcount which tracks the time since navigation to the site.
