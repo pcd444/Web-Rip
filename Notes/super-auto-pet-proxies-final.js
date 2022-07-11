@@ -1,4 +1,5 @@
 // Final proxy attempts for super auto pets 
+// This is a departure from the theme of the project. But is some use for proxying.
 
 // Fetch
 ofetch = fetch;
