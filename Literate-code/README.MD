@@ -1,0 +1,2 @@
+The files in this folder are not code that will be exicuted but more of a guide through the approch needed to do things. 
+Look up literate coding to get an idea, although no exact approach is used here.

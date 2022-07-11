@@ -16,8 +16,53 @@ and yes you can proxy important builtins!!!!!!
 ---------------------------------------------------------------------------------------------------
 You can find the code location in js. By using. Error('').stack
 ---------------------------------------------------------------------------------------------------
-This ripper attempst to deal with web requests in a way that preserves some functionality of the site.
+This ripper attempt to deal with web requests in a way that preserves some functionality of the site.
 And it will do this in an interactive way that uses user knowledge.
 ---------------------------------------------------------------------------------------------------
 Ripping should store requests in a map. The keys would be the request, and the values would be the 
 response data.
+---------------------------------------------------------------------------------------------------
+How to extract the source html? You can litteraly just use fetch for the url and get the html.
+The same is true for source js and css. 
+---------------------------------------------------------------------------------------------------
+Other things you may have to proxy. Event source. Websocket. Date.
+---------------------------------------------------------------------------------------------------
+Service workers provide a great way of intercepting network requests. You can intercept fetch, 
+xmlhttprequest, image download etc. The issue is that there might already be a service worker 
+for the site and there can only be one service worker for the site. If you want a service worker 
+approach to always work you might have to edit the service worker code on download programatically
+(don't know if possible), or add a breakpoint into the service worker code.
+---------------------------------------------------------------------------------------------------
+URLs in static html cannot be intercepted the way the urls in JS can be. Thus 
+they have to be transformed in the new static html. The issue with this is that 
+those src and href attributes are accessable to JS and so the site won't be 100% 
+the same. Even if logic using src and href attributes is probably rare and bad practice.
+If you had to fix you would need to probably proxy all of the dom js objects in order to 
+lie. You would mark all source html elements with some data property and proxy all of the
+document.getElementBy... to make them lie when the element is a source element. 
+But this is alot of work, I say skip for now. 
+---------------------------------------------------------------------------------------------------
+Service worker pages are an issue. Ignore for now.
+---------------------------------------------------------------------------------------------------
+The best way to download the ripped site is to use the zip library we found jszip to build up a 
+virtual folder and then zip it. jszip can accomidate text and blobs so I think it will do the job.
+---------------------------------------------------------------------------------------------------
+Replay the site. I belive since local files in the same folder as the html file are counted as 
+cross origin it is hard or very hacky to get the site to work without a local server. If you needed
+to get it to work without a local server you could have the javascript be inlined and include all 
+of the img data etc. We have to consider maybe replaying using a server rather than local JS.
+---------------------------------------------------------------------------------------------------
+An issue with the map method of storing server side fetches is that the same request can result in
+different responses. Just think about a request to latest-videos api, sucsessive calls would have 
+different responses. There are many different types of api endpoints that don't have map like behavior.
+For example you could have one that depends on randomly generated numbers, one that changes based on 
+a data source that the user has nothing to do with (like the latest-videos example), one that 
+changes based on other api calls made by the user. Pretty obviously it isn't possible to fully 
+recreate the behavior of the backend. But what we can do is warn the user of this behavior and maybe 
+give options on how to attempt to simulate the behavior. For example you could try and give only the 
+last response, or give the responses in the order that they were given.
+---------------------------------------------------------------------------------------------------
+Fortunately the above problem of complex changing responses to API calls is uncommon because rest 
+apis are supposed to be stateless (that is, there is no communication state).
+---------------------------------------------------------------------------------------------------
+
