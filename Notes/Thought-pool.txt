@@ -1,27 +1,6 @@
 Breif descriptions of what you are currently thinking about.
 When any of these ideas is well formed and somewhat complete promote it to the latest log file.
 
-+ what other proxies do i need?
-
-+ what is the effect of the page start up process?
-
-+ how can we generate js from what we can find out?
-
-+ How do we deal with dom elements made at runtime? Possibly over the internet
-    Dom elements over the internet are a reaction to a fetch or xmlhttprequest. 
-    Those can be hooked and the responses hooked. But can we hook async await type stuff? Yes i dont see why not. 
-
-+ Can we stop the browser during page startup in order to inject js?
-    - It seems that if you put a breakpoint at the first executed piece of JS (not first in the html because of 
-      async reasons). At this point the html source is not available in the sources tab. And document.documentElement
-      reflects the state of parsing. Yes we can stop the browser during page startup in order to inject js!!!!!
-
-
-+ How are we going to integrate the different ripping?
-
-+ Web requests issues. 
-    - The easiest type of web request to record would be one that happens the same way every time. 
-    - Do dynamic requests send cookies. AKA can the http of a request be totaly determined by whats known to js?
 
 + How to proxy fetch?
     - Issue 1: copying Request/Response without ruining them.
@@ -43,8 +22,6 @@ When any of these ideas is well formed and somewhat complete promote it to the l
 + How to copy stringifyable? 
     - toString (i belive)
 
-+ Is there hidden state sent on fetch/xmlhttprequest that we can't programatically see?
-
 + What happens when there are conflicts between fetch options and request options? Or is there a way 
   to copy a request so that these conflicts dont matter?
   - The fetch spec says that fetch internally makes a new request ```new Request(fetchArg1, fetchArg2);```. 
@@ -55,10 +32,4 @@ When any of these ideas is well formed and somewhat complete promote it to the l
 
 + How to deal with abort signals in fetch?
 
-+ The problem of proxying time. 
-    - Time (ie the date object) is another way outside state gets put into the page. 
-      it has some unique problems. If it is used as input into a request it makes the 
-      request very granular and hard to properly cache in the ripping phase. But you 
-      can't just store it and set it the way you can with things like local storage. 
-      The date object has other uses like timing things that you would mess up if you made
-      it static. So I think you should proxy things.
+

@@ -65,4 +65,66 @@ last response, or give the responses in the order that they were given.
 Fortunately the above problem of complex changing responses to API calls is uncommon because rest 
 apis are supposed to be stateless (that is, there is no communication state).
 ---------------------------------------------------------------------------------------------------
+The problem of proxying time. 
+Time (ie the date object) is another way outside state gets put into the page. it has some unique 
+problems. If it is used as input into a request it makes the request very granular and hard to 
+properly cache in the ripping phase. But you can't just store it and set it the way you can with 
+things like local storage. The date object has other uses like timing things that you would mess 
+up if you made it static. So I think you should proxy it.
+---------------------------------------------------------------------------------------------------
+Technical dificulties with proxying time. Date builting objects have an issue. That issue is that 
+they use internal slots. Internal slots are a part of the ECMA spec. They are internal state that
+is not available to Javascript. Internal slots are also the reason that Object.freeze does not
+work on date objects. Object.freeze does freeze all js properties on the date object, but the
+internal slot is uneffected. That means when you call setDate or setYear those methods modify 
+the internal slot, mutating it. 
 
+The situation is less bleak for Proxying Date obj. The date proxy with an empty handler object
+does break. This is because internal slots are accessed on the object directly, and don't go through
+the handler. Because the proxy object isn't really a date, although it pretends to be one, when the
+js engine looks for the slot it can't find it and throws an error.
+
+Bellow is a description of what happens
+
+// JS CODE BEING RUN
+dateProxy.setDate()
+
+// Proxy sees that the get handler is missing and so then reroutes the property get to the target.
+// The internal date object gets the native code setDate method.
+// But a special feature of proxies ensures that the this value inside the native code setDate method
+// will the the proxy, not the Date obj. The setDate method looks for the internal slot on the 
+// proxy and panics when it is not found.
+
+Ok so how can this be fixed? The solution is to have a proxy with a get method that will return abort
+bound version of the method.
+That is 
+get(target){
+    let temp = Reflect.get(...arguments);
+    return typeof temp ==="function" ? temp.bind(target): temp;
+}
+
+So now is everything ok? Sadly no. Because of function.prototype.call we can not get our proxy to have 
+100% the same behavior as a normal date object. That is because Date.prototype.setDate.call(dateProxy,13)
+does not invoke any handler methods but does invoke the setDate method with a proxy this value. 
+
+---------------------------------------------------------------------------------------------------
+How much of the above log actually matters? Well what this application has to do to dates is record 
+the start date on rip, and then change the behavior of the date object on replay. Where the date 
+constructor acts like it is back when the ripping originally happend. So what is it that needs 
+modification? 
+1. Date constructor
+2. Date function (the constructor but not using new)
+3. Date.now()
+None of these are actually a date object with the problematic internal slot.
+
+We need to be better about focusing on the actual needs of the project. 
+---------------------------------------------------------------------------------------------------
+HTTP only cookies.
+Unfortunately there is some data sent in fetch/xmlhttprequest requests that is not available at all 
+to javascript. That data is http only cookies. THese are basically cookies that are not visable to 
+js. There is no solution, at least for the breakpoint/console method. 
+How much of an issue is this? It is a medium level issue. The bad part is that since these are 
+invisible it will prevent us from better storing req/resp pairs. Leading to more conflicts than 
+normal. The good part is that most of what http only cookies is used for is persistent login/ 
+session management. Both of these have pretty simple behavior and aren't terrible to fix by hand. 
+---------------------------------------------------------------------------------------------------
